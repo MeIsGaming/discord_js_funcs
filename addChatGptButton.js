@@ -1,7 +1,12 @@
+/**
+ * Adds a button to open a chat modal with ChatGPT, allows users to send messages to ChatGPT and receive responses.
+ */
 function addChatGptButton() {
+    // Define constant variables for button and modal IDs
     const buttonId = "chatGptButton";
     const modalId = "chatGptModal";
 
+    // Define styles for various elements
     const buttonStyle = {
         position: "fixed",
         bottom: "20px",
@@ -61,6 +66,7 @@ function addChatGptButton() {
         color: "#ffffff",
         fontSize: "14px",
         marginBottom: "10px",
+        userSelect: "text",
     };
 
     const inputAreaStyle = {
@@ -85,6 +91,7 @@ function addChatGptButton() {
         cursor: "pointer",
     };
 
+    // Define functions to remove and create elements
     const removeElement = (elementId) => {
         const existingElement = document.getElementById(elementId);
         if (existingElement) {
@@ -102,9 +109,11 @@ function addChatGptButton() {
         return element;
     };
 
+    // Remove existing button and modal if they exist
     removeElement(buttonId);
     removeElement(modalId);
 
+    // Create all the elements
     const chatButton = createElement(
         "button",
         buttonId,
@@ -124,6 +133,7 @@ function addChatGptButton() {
     const inputField = createElement("input", null, inputFieldStyle);
     const sendButton = createElement("button", null, sendButtonStyle, "Send");
 
+    // Append elements to their parents
     chatModal.appendChild(modalHeader);
     chatModal.appendChild(closeButton);
     chatModal.appendChild(messageArea);
@@ -135,6 +145,7 @@ function addChatGptButton() {
     document.body.appendChild(chatButton);
     document.body.appendChild(chatModal);
 
+    // Functions to handle events
     const toggleModalVisibility = () => {
         if (
             chatModal.style.display === "none" ||
@@ -184,9 +195,11 @@ function addChatGptButton() {
         chatModal.style.display = "none";
     };
 
-    const apiKey = "";
+    // API key and URL for OpenAI API
+    const apiKey = "YOUR_API_KEY_HERE";
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
+    // Function to send a message to ChatGPT and receive a response
     const sendMessage = async (message) => {
         const response = await fetch(apiUrl, {
             method: "POST",
@@ -204,9 +217,12 @@ function addChatGptButton() {
         return data.choices[0].message.content;
     };
 
+    // Function to handle sending a message to ChatGPT and appending it to the chat area
     const handleSendMessage = async () => {
         const userMessage = inputField.value.trim();
-        if (userMessage === "") return;
+        if (userMessage === "") {
+            return;
+        }
 
         const userMessageElement = createElement(
             "p",
@@ -239,6 +255,5 @@ function addChatGptButton() {
         }
     });
 }
-
 // Run the function to add the button and chat modal
 addChatGptButton();
